@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rise - Daily Calm | Start Each Day With Intention</title>
-    <meta name="description" content="Connect with people around the world for shared moments of mindfulness. Rise helps you begin your day with intention through guided breathing and meditation.">
+    <title>Rise - Daily Calm | Mindfulness & Meditation App</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Start each day with intention. Rise connects you with people worldwide for shared meditation and breathing exercises. 3-day free trial.">
+    <meta name="keywords" content="meditation, mindfulness, breathing exercises, calm, wellness, mental health">
+    <meta name="author" content="Rise - Daily Calm">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Rise - Daily Calm | Mindfulness & Meditation App">
+    <meta property="og:description" content="Connect with people worldwide for shared moments of mindfulness. Start your free trial today.">
+    <meta property="og:url" content="https://www.risedailycalm.com/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='20' fill='%23FF8A65'/></svg>">
+    
     <style>
         * {
             margin: 0;
@@ -16,16 +30,54 @@
             --gradient-start: #FF8A65;
             --gradient-mid: #EC407A;
             --gradient-end: #5C6BC0;
+            --text-light: rgba(255, 255, 255, 0.95);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        html {
+            scroll-behavior: smooth;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         
-        /* Animated background elements */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-mid) 50%, var(--gradient-end) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         .bg-animation {
             position: fixed;
             top: 0;
@@ -40,66 +92,151 @@
         .floating-circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 20s infinite ease-in-out;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(2px);
+            animation: float 25s infinite ease-in-out;
         }
         
         .circle1 {
-            width: 300px;
-            height: 300px;
-            top: -150px;
-            left: -150px;
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            left: -200px;
             animation-delay: 0s;
         }
         
         .circle2 {
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            right: -100px;
-            animation-delay: 5s;
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            right: -150px;
+            animation-delay: 7s;
         }
         
         .circle3 {
-            width: 250px;
-            height: 250px;
-            bottom: -125px;
-            left: 30%;
-            animation-delay: 10s;
+            width: 350px;
+            height: 350px;
+            bottom: -175px;
+            left: 25%;
+            animation-delay: 14s;
         }
         
         @keyframes float {
             0%, 100% {
-                transform: translateY(0) rotate(0deg);
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.5;
             }
-            50% {
-                transform: translateY(-30px) rotate(180deg);
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+                opacity: 0.8;
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+                opacity: 0.6;
             }
         }
         
-        /* Header */
-        header {
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+        
+        nav.scrolled {
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-logo {
+            font-size: 32px;
+            font-weight: 300;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+        
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: var(--transition);
             position: relative;
-            z-index: 10;
-            padding: 20px;
-            text-align: center;
         }
         
-        /* Hero Section */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: white;
+            color: var(--gradient-mid);
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-cta::after {
+            display: none;
+        }
+        
         .hero {
             position: relative;
             z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 40px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 1s ease-out;
+            padding: 120px 20px 60px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
         }
         
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -108,421 +245,702 @@
         }
         
         .sun-icon {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 30px;
-            animation: pulse 3s ease-in-out infinite;
+            width: 140px;
+            height: 140px;
+            margin-bottom: 40px;
+            animation: pulse 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
         }
         
         @keyframes pulse {
             0%, 100% {
                 transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+                filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
             }
             50% {
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.8));
             }
         }
         
-        .sun-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .logo {
-            font-size: 80px;
-            font-weight: 300;
+        .hero-title {
+            font-size: clamp(60px, 10vw, 100px);
+            font-weight: 200;
             color: white;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
             text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
         
-        .tagline {
-            font-size: 28px;
-            color: rgba(255, 255, 255, 0.95);
+        .hero-tagline {
+            font-size: clamp(24px, 4vw, 32px);
+            color: var(--text-light);
             margin-bottom: 30px;
             font-weight: 300;
             font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.6s forwards;
         }
         
-        .description {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.9);
+        .hero-description {
+            font-size: clamp(18px, 2.5vw, 22px);
+            color: var(--text-light);
             line-height: 1.8;
-            margin-bottom: 50px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.9s forwards;
         }
         
-        /* App Store Button */
-        .download-btn {
-            display: inline-block;
+        .cta-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+        }
+        
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             background: white;
-            color: #EC407A;
-            padding: 18px 50px;
+            color: var(--gradient-mid);
+            padding: 20px 50px;
             border-radius: 50px;
             font-size: 20px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
+            transition: var(--transition);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: none;
+            cursor: pointer;
         }
         
-        .download-btn:hover {
+        .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
         }
         
-        .pricing {
+        .pricing-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
             color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
             font-size: 16px;
-            opacity: 0.9;
-            margin-top: 10px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
-        /* Features Section */
-        .features {
+        .trust-indicators {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.5s forwards;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .section {
             position: relative;
             z-index: 10;
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        
+        .section-title {
+            font-size: clamp(36px, 5vw, 52px);
+            color: white;
+            font-weight: 300;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-light);
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeInUp 1s ease-out;
-            animation-fill-mode: both;
+            cursor: pointer;
         }
         
-        .feature-card:nth-child(1) { animation-delay: 0.2s; }
-        .feature-card:nth-child(2) { animation-delay: 0.4s; }
-        .feature-card:nth-child(3) { animation-delay: 0.6s; }
-        
         .feature-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(-15px);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
         }
         
         .feature-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 70px;
+            margin-bottom: 25px;
+            display: inline-block;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
         }
         
         .feature-title {
-            font-size: 24px;
+            font-size: 26px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        
+        .feature-desc {
+            font-size: 17px;
+            color: var(--text-light);
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+        
+        .stats-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 60px 40px;
+            margin: 80px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 300;
+            color: white;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            color: white;
+            opacity: 0.9;
+        }
+        
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+            margin-top: 60px;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: white;
+            color: var(--gradient-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-title {
+            font-size: 22px;
             color: white;
             font-weight: 600;
             margin-bottom: 15px;
         }
         
-        .feature-desc {
+        .step-desc {
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.9);
+            color: var(--text-light);
             line-height: 1.6;
+            opacity: 0.95;
         }
         
-        /* App Preview Section */
-        .app-preview {
-            position: relative;
-            z-index: 10;
-            max-width: 1000px;
-            margin: 80px auto;
-            padding: 0 20px;
+        .cta-section {
             text-align: center;
+            padding: 100px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            margin: 80px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .preview-title {
-            font-size: 42px;
+        .cta-title {
+            font-size: clamp(32px, 5vw, 48px);
             color: white;
             font-weight: 300;
-            margin-bottom: 50px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 25px;
         }
         
-        .screenshots {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 20px 0;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .screenshot {
-            flex: 0 0 auto;
-            width: 250px;
-            height: 540px;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, #FF8A65 0%, #EC407A 50%, #5C6BC0 100%);
-        }
-        
-        .screenshot:hover {
-            transform: scale(1.05);
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Footer Links */
-        .footer-links {
-            position: relative;
-            z-index: 10;
+        .cta-subtitle {
+            font-size: clamp(16px, 2vw, 20px);
+            color: var(--text-light);
+            margin-bottom: 40px;
             max-width: 600px;
-            margin: 60px auto 40px;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .footer-link {
-            display: inline-block;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: white;
-            text-decoration: none;
-            border-radius: 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            text-align: center;
-        }
-        
-        .footer-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateX(5px);
-        }
-        
-        /* Footer */
         footer {
             position: relative;
             z-index: 10;
-            text-align: center;
-            padding: 40px 20px;
-            color: white;
+            padding: 60px 40px 40px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 80px;
         }
         
         .footer-content {
-            max-width: 600px;
+            max-width: 1400px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
         
-        .footer-content p {
-            margin-bottom: 10px;
+        .footer-section h3 {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 15px;
+            transition: var(--transition);
             opacity: 0.9;
         }
         
-        .footer-content a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
+        .footer-link:hover {
+            opacity: 1;
+            transform: translateX(5px);
         }
         
-        .footer-content a:hover {
-            opacity: 0.7;
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 14px;
+            opacity: 0.9;
         }
         
-        /* Responsive Design */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: var(--gradient-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
         @media (max-width: 768px) {
-            .logo {
-                font-size: 60px;
+            nav {
+                padding: 15px 20px;
             }
             
-            .tagline {
-                font-size: 22px;
+            .nav-links {
+                gap: 15px;
             }
             
-            .description {
-                font-size: 18px;
+            .nav-link {
+                font-size: 14px;
             }
             
-            .preview-title {
-                font-size: 32px;
+            .hero {
+                padding: 100px 20px 40px;
             }
             
-            .screenshot {
-                width: 200px;
-                height: 432px;
+            .sun-icon {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .section {
+                padding: 60px 20px;
+            }
+            
+            .features-grid,
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .trust-indicators {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cta-section {
+                margin: 60px 20px;
+                padding: 60px 30px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .footer-links {
+                align-items: center;
             }
         }
         
-        /* Scroll Animation */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        .fade-in {
-            animation: fadeIn 1s ease-out;
         }
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
+    <div class="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+    
     <div class="bg-animation">
         <div class="floating-circle circle1"></div>
         <div class="floating-circle circle2"></div>
         <div class="floating-circle circle3"></div>
     </div>
     
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="sun-icon">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="20" fill="white"/>
-                <line x1="50" y1="10" x2="50" y2="20" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="50" y1="80" x2="50" y2="90" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="10" y1="50" x2="20" y2="50" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="80" y1="50" x2="90" y2="50" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="21.7157" y1="21.7157" x2="28.7868" y2="28.7868" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="71.2132" y1="71.2132" x2="78.2843" y2="78.2843" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="21.7157" y1="78.2843" x2="28.7868" y2="71.2132" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <line x1="71.2132" y1="28.7868" x2="78.2843" y2="21.7157" stroke="white" stroke-width="4" stroke-linecap="round"/>
-            </svg>
+    <nav id="navbar">
+        <a href="#home" class="nav-logo">Rise</a>
+        <div class="nav-links">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#download" class="nav-link nav-cta">Download</a>
         </div>
+    </nav>
+    
+    <section class="hero" id="home">
+        <svg class="sun-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="20" fill="white"/>
+            <line x1="50" y1="10" x2="50" y2="20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="50" y1="80" x2="50" y2="90" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="10" y1="50" x2="20" y2="50" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="80" y1="50" x2="90" y2="50" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="21.7157" y1="21.7157" x2="28.7868" y2="28.7868" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="71.2132" y1="71.2132" x2="78.2843" y2="78.2843" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="21.7157" y1="78.2843" x2="28.7868" y2="71.2132" stroke="white" stroke-width="4" stroke-linecap="round"/>
+            <line x1="71.2132" y1="28.7868" x2="78.2843" y2="21.7157" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        </svg>
         
-        <h1 class="logo">Rise</h1>
-        <p class="tagline">Start each day with intention</p>
+        <h1 class="hero-title">Rise</h1>
+        <p class="hero-tagline">Start each day with intention</p>
         
-        <p class="description">
+        <p class="hero-description">
             Connect with people around the world for shared moments of mindfulness. 
-            Rise helps you begin your day with guided breathing exercises, calming ambient sounds, 
-            and daily inspiration.
+            Experience guided breathing exercises, calming ambient sounds, and daily inspiration 
+            to begin your day with purpose.
         </p>
         
-        <a href="https://apps.apple.com/app/rise" class="download-btn">
-            📱 Download on App Store
-        </a>
+        <div class="cta-container">
+            <a href="https://apps.apple.com/app/rise" class="btn-primary">
+                <span>📱</span>
+                Download on App Store
+            </a>
+            <div class="pricing-badge">
+                🎁 3 days free, then $3.99/month
+            </div>
+        </div>
         
-        <p class="pricing">
-            3 days free, then $3.99/month
+        <div class="trust-indicators">
+            <div class="trust-item">
+                <span>✓</span>
+                <span>No credit card required</span>
+            </div>
+            <div class="trust-item">
+                <span>✓</span>
+                <span>Cancel anytime</span>
+            </div>
+            <div class="trust-item">
+                <span>✓</span>
+                <span>Privacy first</span>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" id="features">
+        <div class="section-header">
+            <h2 class="section-title">Why Choose Rise?</h2>
+            <p class="section-subtitle">
+                Everything you need to build a consistent mindfulness practice
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3 class="feature-title">Meditate With The World</h3>
+                <p class="feature-desc">
+                    Connect with random people worldwide for shared breathing sessions. 
+                    Experience mindfulness together in a safe, anonymous environment.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">❤️</div>
+                <h3 class="feature-title">Breathe With Friends</h3>
+                <p class="feature-desc">
+                    Add friends with unique codes and meditate together. 
+                    Share moments of calm and support each other's wellness journey.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3 class="feature-title">Daily Inspiration</h3>
+                <p class="feature-desc">
+                    Start each morning with fresh motivational quotes and premium calming soundscapes 
+                    to set positive intentions.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎵</div>
+                <h3 class="feature-title">Premium Sounds</h3>
+                <p class="feature-desc">
+                    Access a curated library of ambient soundscapes designed to enhance 
+                    your meditation experience.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Private & Secure</h3>
+                <p class="feature-desc">
+                    Your data is encrypted and never sold. Meditate with peace of mind 
+                    knowing your privacy is our priority.
+                </p>
+            </div>
+        </div>
+        
+
+    </section>
+    
+    <section class="section" id="how-it-works">
+        <div class="section-header">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">
+                Get started with Rise in three simple steps
+            </p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Download & Sign Up</h3>
+                <p class="step-desc">
+                    Download Rise from the App Store and create your account. 
+                    Start your 3-day free trial with full access.
+                </p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Connect & Match</h3>
+                <p class="step-desc">
+                    Find a random meditation partner worldwide or invite friends 
+                    using your unique friend code.
+                </p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Breathe & Grow</h3>
+                <p class="step-desc">
+                    Follow guided breathing exercises, track your progress, 
+                    and build a consistent mindfulness practice.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="download">
+        <h2 class="cta-title">Ready to Start Your Journey?</h2>
+        <p class="cta-subtitle">
+            Join thousands of people worldwide beginning each day with intention
         </p>
-    </section>
-    
-    <!-- Features Section -->
-    <section class="features">
-        <div class="feature-card">
-            <div class="feature-icon">🌍</div>
-            <h3 class="feature-title">Meditate With The World</h3>
-            <p class="feature-desc">
-                Connect with random people worldwide for shared breathing sessions. 
-                Experience mindfulness together, anonymously and peacefully.
-            </p>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">❤️</div>
-            <h3 class="feature-title">Breathe With Friends</h3>
-            <p class="feature-desc">
-                Add friends with unique codes and meditate together. 
-                Share moments of calm and support each other's mindfulness journey.
-            </p>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">✨</div>
-            <h3 class="feature-title">Daily Inspiration</h3>
-            <p class="feature-desc">
-                Start each morning with fresh motivational quotes and calming ambient soundscapes 
-                to set your intentions for the day.
-            </p>
-        </div>
-    </section>
-    
-    <!-- App Preview -->
-    <section class="app-preview">
-        <h2 class="preview-title">Experience Rise</h2>
-        <div class="screenshots">
-            <div class="screenshot">
-                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FF8A65 0%, #EC407A 50%, #5C6BC0 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; padding: 20px; text-align: center;">
-                    Beautiful meditation interface
-                </div>
-            </div>
-            <div class="screenshot">
-                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FF8A65 0%, #EC407A 50%, #5C6BC0 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; padding: 20px; text-align: center;">
-                    Connect globally
-                </div>
-            </div>
-            <div class="screenshot">
-                <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FF8A65 0%, #EC407A 50%, #5C6BC0 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; padding: 20px; text-align: center;">
-                    Guided breathing
-                </div>
+        <div class="cta-container">
+            <a href="https://apps.apple.com/app/rise-daily-calm" class="btn-primary">
+                <span>📱</span>
+                Download Now - Free Trial
+            </a>
+            <div class="pricing-badge">
+                No credit card required • Cancel anytime
             </div>
         </div>
     </section>
     
-    <!-- Footer Links -->
-    <div class="footer-links">
-        <a href="privacy.html" class="footer-link">🔒 Privacy Policy</a>
-        <a href="terms.html" class="footer-link">📄 Terms of Service</a>
-    </div>
-    
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
+            <div class="footer-section">
+                <h3>Rise</h3>
+                <p style="color: rgba(255,255,255,0.9); margin-top: 10px; font-size: 14px;">
+                    Start each day with intention through mindfulness and meditation.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Product</h3>
+                <div class="footer-links">
+                    <a href="#features" class="footer-link">Features</a>
+                    <a href="#how-it-works" class="footer-link">How It Works</a>
+                    <a href="https://apps.apple.com/app/rise-daily-calm" class="footer-link">Download</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <div class="footer-links">
+                    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                    <a href="terms.html" class="footer-link">Terms of Service</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <div class="footer-links">
+                    <a href="mailto:risedailycalm@gmail.com" class="footer-link">risedailycalm@gmail.com</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
             <p>&copy; 2025 Rise - Daily Calm. All rights reserved.</p>
-            <p style="margin-top: 15px;">
-                <a href="mailto:risedailycalm@gmail.com">risedailycalm@gmail.com</a>
-            </p>
-            <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
-                Made with ❤️ for mindful mornings
-            </p>
+            <p style="margin-top: 10px; font-size: 13px;">Made with ❤️ for mindful mornings</p>
         </div>
     </footer>
     
+    <div class="scroll-top" id="scrollTop">↑</div>
+    
     <script>
-        // Add smooth scrolling
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.page-loader');
+            setTimeout(() => loader.classList.add('hidden'), 500);
+        });
+        
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
                         behavior: 'smooth'
                     });
                 }
             });
         });
         
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            scrollTopBtn.classList.toggle('visible', window.pageYOffset > 500);
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
         
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
         
-        document.querySelectorAll('.feature-card, .screenshot').forEach(el => {
+        document.querySelectorAll('.feature-card, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
     </script>
