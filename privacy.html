@@ -181,7 +181,17 @@
         .footer a:hover {
             opacity: 0.7;
         }
-        
+
+        .footer-nav {
+            margin-top: 15px;
+        }
+
+        /* Focus states for accessibility */
+        a:focus-visible {
+            outline: 3px solid var(--gradient-mid);
+            outline-offset: 2px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 40px 30px;
@@ -305,7 +315,7 @@
         
         <div class="footer">
             <p>&copy; 2025 Rise - Daily Calm. All rights reserved.</p>
-            <p style="margin-top: 15px;"><a href="terms.html">Terms of Service</a> • <a href="index.html">Home</a></p>
+            <p class="footer-nav"><a href="terms.html">Terms of Service</a> • <a href="index.html">Home</a></p>
         </div>
     </div>
 </body>
